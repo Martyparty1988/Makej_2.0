@@ -24,11 +24,11 @@
     <h1>Pracovní Výkazy</h1>
     <nav>
       <ul>
-        <li><a href="#dochazka" data-section="dochazka" class="active" aria-label="Docházka"><i class="fas fa-clock"></i></a></li>
-        <li><a href="#finance" data-section="finance" aria-label="Finance"><i class="fas fa-money-bill-wave"></i></a></li>
-        <li><a href="#srazky" data-section="srazky" aria-label="Srážky"><i class="fas fa-percentage"></i></a></li>
-        <li><a href="#prehledy" data-section="prehledy" aria-label="Přehledy"><i class="fas fa-chart-bar"></i></a></li>
-        <li><a href="#nastaveni" data-section="nastaveni" aria-label="Nastavení"><i class="fas fa-cog"></i></a></li>
+        <li><a href="#dochazka" data-section="dochazka" class="active" aria-label="Docházka" aria-selected="true"><i class="fas fa-clock"></i></a></li>
+        <li><a href="#finance" data-section="finance" aria-label="Finance" aria-selected="false"><i class="fas fa-money-bill-wave"></i></a></li>
+        <li><a href="#srazky" data-section="srazky" aria-label="Srážky" aria-selected="false"><i class="fas fa-percentage"></i></a></li>
+        <li><a href="#prehledy" data-section="prehledy" aria-label="Přehledy" aria-selected="false"><i class="fas fa-chart-bar"></i></a></li>
+        <li><a href="#nastaveni" data-section="nastaveni" aria-label="Nastavení" aria-selected="false"><i class="fas fa-cog"></i></a></li>
       </ul>
     </nav>
   </header>
@@ -36,16 +36,28 @@
   <main>
     <!-- DOCHÁZKA -->
     <section id="dochazka" class="active">
-      <div class="dashboard-grid">
+      <div class="dashboard-grid dashboard-order">
         <!-- Timer Card -->
-        <div class="card timer-card" aria-label="Časovač">
-          <div class="person-selector" role="tablist">
-            <button class="person-tab active" data-person="maru" role="tab" aria-selected="true">
-              Maru <span class="rate">275 Kč/h</span>
-            </button>
-            <button class="person-tab" data-person="marty" role="tab" aria-selected="false">
-              Marty <span class="rate">400 Kč/h</span>
-            </button>
+        <div class="card timer-card order-timer" aria-label="Časovač">
+          <div class="worker-selector" role="radiogroup">
+            <div class="worker-options">
+              <label class="worker-option maru">
+                <input type="radio" name="worker" value="maru" checked>
+                <span class="worker-background"></span>
+                <span class="worker-option-content">
+                  <span class="worker-option-label">Maru</span>
+                  <span class="worker-option-rate">275 Kč/h</span>
+                </span>
+              </label>
+              <label class="worker-option marty">
+                <input type="radio" name="worker" value="marty">
+                <span class="worker-background"></span>
+                <span class="worker-option-content">
+                  <span class="worker-option-label">Marty</span>
+                  <span class="worker-option-rate">400 Kč/h</span>
+                </span>
+              </label>
+            </div>
           </div>
           <div class="timer-display" aria-live="off">
             <div class="digits">
@@ -80,10 +92,184 @@
           </div>
         </div>
         <!-- Ostatní sekce (stejný markup jako dříve) -->
+        <div class="card budget-card order-budget" aria-label="Rozpočet">
+          <h3>Rozpočet</h3>
+          <div class="budget-display">
+            <div class="budget-circle">
+              <svg class="circular-chart">
+                <circle class="circle-bg" r="60" cx="65" cy="65"></circle>
+                <circle class="circle" r="60" cx="65" cy="65"></circle>
+              </svg>
+              <div class="budget-amount" id="shared-budget">0 Kč</div>
+            </div>
+            <div class="budget-info">
+              <div class="budget-item"><span class="label">Příjmy</span><span class="value">0 Kč</span></div>
+              <div class="budget-item"><span class="label">Výdaje</span><span class="value">0 Kč</span></div>
+            </div>
+            <div class="budget-actions">
+              <button class="btn income-btn" aria-label="Přidat příjem">Příjem</button>
+              <button class="btn expense-btn" aria-label="Přidat výdaj">Výdaj</button>
+            </div>
+          </div>
+        </div>
+        <div class="card manual-entry order-manual" aria-label="Ruční záznam">
+          <h3>Ruční Záznam</h3>
+          <div class="form-container">
+            <form class="form-row">
+              <div class="form-group">
+                <input type="text" placeholder="Úkol" aria-label="Úkol">
+              </div>
+              <div class="form-group">
+                <input type="number" placeholder="Hodiny" aria-label="Hodiny">
+              </div>
+              <div class="form-actions">
+                <button class="btn primary-btn" type="submit">Uložit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="card summary-card order-summary" aria-label="Shrnutí">
+          <h3>Shrnutí</h3>
+          <div class="summary-grid">
+            <div class="summary-item"><span class="label">Celkem hodin:</span><span class="value">0</span></div>
+            <div class="summary-item"><span class="label">Celkem výdělek:</span><span class="value highlight">0 Kč</span></div>
+          </div>
+        </div>
+        <div class="card recent-logs order-recent" aria-label="Poslední záznamy">
+          <h3>Poslední Záznamy</h3>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr><th>Úkol</th><th>Čas</th><th>Výdělek</th></tr>
+              </thead>
+              <tbody><tr class="empty-row"><td colspan="3">Žádné záznamy</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- FINANCE -->
+    <section id="finance">
+      <div class="finance-summary">
+        <div class="stat-item"><div class="stat-icon income-icon"><i class="fas fa-arrow-up"></i></div><div class="stat-info"><span class="stat-label">Příjmy</span><span class="stat-value">0 Kč</span></div></div>
+        <div class="stat-item"><div class="stat-icon expense-icon"><i class="fas fa-arrow-down"></i></div><div class="stat-info"><span class="stat-label">Výdaje</span><span class="stat-value">0 Kč</span></div></div>
+        <div class="stat-item"><div class="stat-icon budget-icon"><i class="fas fa-wallet"></i></div><div class="stat-info"><span class="stat-label">Zůstatek</span><span class="stat-value">0 Kč</span></div></div>
+      </div>
+      <div class="finance-logs">
+        <table>
+          <thead><tr><th>Datum</th><th>Typ</th><th>Částka</th></tr></thead>
+          <tbody><tr class="empty-row"><td colspan="3">Žádné záznamy</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+    <!-- SRAZKY -->
+    <section id="srazky">
+      <div class="deductions-card">
+        <h3>Srážky</h3>
+        <div class="deductions-chart-container">
+          <canvas id="deductions-chart"></canvas>
+        </div>
+        <div class="deductions-info">
+          <div class="deductions-item"><span class="label">Celkem srážek:</span><span class="value">0 Kč</span></div>
+          <div class="deductions-item"><span class="label">Sazba Maru:</span><span class="value">33.33%</span></div>
+          <div class="deductions-item"><span class="label">Sazba Marty:</span><span class="value">50%</span></div>
+        </div>
+      </div>
+      <div class="rent-card">
+        <h3>Rent</h3>
+        <div class="rent-info">
+          <div class="rent-item"><span class="label">Částka:</span><span class="value unpaid">0 Kč</span></div>
+          <div class="rent-item"><span class="label">Datum:</span><span class="value">1. den měsíce</span></div>
+          <div class="rent-item"><span class="label">Stav:</span><span class="value unpaid">Nezaplaceno</span></div>
+        </div>
+      </div>
+    </section>
+    <!-- PREHLEDY -->
+    <section id="prehledy">
+      <div class="stats-card">
+        <h3>Statistiky</h3>
+        <div class="period-selector">
+          <button class="period-btn active" data-period="week">Týden</button>
+          <button class="period-btn" data-period="month">Měsíc</button>
+          <button class="period-btn" data-period="year">Rok</button>
+        </div>
+        <div class="stats-chart-container">
+          <canvas id="stats-chart"></canvas>
+        </div>
+      </div>
+      <div class="tasks-card">
+        <h3>Úkoly</h3>
+        <div class="tasks-chart-container">
+          <canvas id="tasks-chart"></canvas>
+        </div>
+      </div>
+      <div class="export-buttons">
+        <button id="export-work-logs" class="btn export-btn">Export Pracovních Záznamů</button>
+        <button id="export-finance" class="btn export-btn">Export Financí</button>
+        <input type="file" id="import-data-input" accept=".json" style="display:none;">
+        <button id="backup-data" class="btn export-btn">Záloha</button>
+        <button id="clear-all-data" class="btn danger-btn">Smazat Vše</button>
+      </div>
+    </section>
+    <!-- NASTAVENI -->
+    <section id="nastaveni">
+      <div class="settings-card">
+        <div class="profile-settings">
+          <div class="user-settings">
+            <h4>Profil</h4>
+            <div class="setting-item"><span class="setting-label">Jméno:</span><span>Maru</span></div>
+            <div class="setting-item"><span class="setting-label">Sazba:</span><span>275 Kč/h</span></div>
+          </div>
+          <div class="theme-settings">
+            <div class="theme-option">
+              <label class="switch">
+                <input type="checkbox" id="dark-mode-toggle">
+                <span class="slider"></span>
+              </label>
+              <span class="theme-label">Tmavý režim</span>
+            </div>
+            <div class="theme-colors">
+              <div class="color-option" data-color="blue"></div>
+              <div class="color-option" data-color="green"></div>
+              <div class="color-option" data-color="purple"></div>
+              <div class="color-option" data-color="orange"></div>
+            </div>
+          </div>
+        </div>
+        <div class="categories-card">
+          <h3>Kategorie</h3>
+          <div class="add-category">
+            <input type="text" placeholder="Nová kategorie" aria-label="Nová kategorie">
+            <button class="btn primary-btn">Přidat</button>
+          </div>
+        </div>
+        <div class="rent-settings">
+          <h3>Nastavení nájmu</h3>
+          <form class="form-row">
+            <div class="form-group">
+              <input type="number" placeholder="Částka" aria-label="Částka nájmu">
+            </div>
+            <div class="form-group">
+              <input type="number" placeholder="Den splatnosti" aria-label="Den splatnosti">
+            </div>
+            <div class="form-actions">
+              <button class="btn primary-btn" type="submit">Uložit</button>
+            </div>
+          </form>
+        </div>
+        <div class="data-management">
+          <h3>Správa dat</h3>
+          <div class="data-actions">
+            <button id="backup-data" class="btn export-btn">Záloha</button>
+            <button id="clear-all-data" class="btn danger-btn">Smazat Vše</button>
+          </div>
+          <div class="warning-text"><i class="fas fa-exclamation-triangle"></i> Smazání dat je nevratné!</div>
+        </div>
       </div>
     </section>
   </main>
 
   <div id="notification" class="notification" aria-live="polite"></div>
+  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93b4ffd04c75bd60',t:'MTc0NjQ5ODAzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
