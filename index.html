@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Pracovní Výkazy</title>
+
+  <!-- PWA manifest & ikony -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏱️</text></svg>">
+
+  <!-- Font Awesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Vlastní styl -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Hlavní skript (ES6 modules) -->
+  <script type="module" src="js/main.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Pracovní Výkazy</h1>
+    <nav>
+      <ul>
+        <li><a href="#dochazka" data-section="dochazka" class="active" aria-label="Docházka"><i class="fas fa-clock"></i></a></li>
+        <li><a href="#finance" data-section="finance" aria-label="Finance"><i class="fas fa-money-bill-wave"></i></a></li>
+        <li><a href="#srazky" data-section="srazky" aria-label="Srážky"><i class="fas fa-percentage"></i></a></li>
+        <li><a href="#prehledy" data-section="prehledy" aria-label="Přehledy"><i class="fas fa-chart-bar"></i></a></li>
+        <li><a href="#nastaveni" data-section="nastaveni" aria-label="Nastavení"><i class="fas fa-cog"></i></a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- DOCHÁZKA -->
+    <section id="dochazka" class="active">
+      <div class="dashboard-grid">
+        <!-- Timer Card -->
+        <div class="card timer-card" aria-label="Časovač">
+          <div class="person-selector" role="tablist">
+            <button class="person-tab active" data-person="maru" role="tab" aria-selected="true">
+              Maru <span class="rate">275 Kč/h</span>
+            </button>
+            <button class="person-tab" data-person="marty" role="tab" aria-selected="false">
+              Marty <span class="rate">400 Kč/h</span>
+            </button>
+          </div>
+          <div class="timer-display" aria-live="off">
+            <div class="digits">
+              <div class="digit-group"><div class="digit" id="hours-tens">0</div><div class="digit" id="hours-ones">0</div></div>
+              <div class="separator">:</div>
+              <div class="digit-group"><div class="digit" id="minutes-tens">0</div><div class="digit" id="minutes-ones">0</div></div>
+              <div class="separator">:</div>
+              <div class="digit-group"><div class="digit" id="seconds-tens">0</div><div class="digit" id="seconds-ones">0</div></div>
+            </div>
+            <div class="earnings-display">
+              <div class="earnings-item"><span class="label">Hrubé:</span><span id="current-earnings">0 Kč</span></div>
+              <div class="earnings-item"><span class="label">Srážka:</span><span id="current-deduction">0 Kč</span></div>
+              <div class="earnings-item"><span class="label">Čisté:</span><span id="current-net">0 Kč</span></div>
+            </div>
+            <div class="timer-controls">
+              <button id="timer-start" class="btn start-btn" aria-label="Spustit časovač"><i class="fas fa-play"></i><span>Start</span></button>
+              <button id="timer-stop" class="btn stop-btn" aria-label="Zastavit časovač" disabled><i class="fas fa-stop"></i><span>Stop</span></button>
+            </div>
+          </div>
+          <div class="task-selection">
+            <div class="form-group">
+              <select id="task-select" required aria-label="Vybrat úkol">
+                <option value="">-- Vyberte úkol --</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <input type="text" id="task-subcategory" placeholder="Podkategorie (volitelné)" aria-label="Podkategorie">
+            </div>
+            <div class="form-group">
+              <textarea id="task-note" placeholder="Poznámka k úkolu (volitelná)" aria-label="Poznámka"></textarea>
+            </div>
+          </div>
+        </div>
+        <!-- Ostatní sekce (stejný markup jako dříve) -->
+      </div>
+    </section>
+  </main>
+
+  <div id="notification" class="notification" aria-live="polite"></div>
+</body>
+</html>
