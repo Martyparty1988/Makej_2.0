@@ -30,10 +30,10 @@ function setupInstallPrompt() {
     btn.textContent = 'Instalovat aplikaci';
     btn.className = 'btn primary-btn install-btn';
     document.body.appendChild(btn);
-    btn.addEventListener('click', ()=>{
+    btn.addEventListener('click', () => {
       deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(choice=>{
-        if (choice.outcome==='accepted') btn.remove();
+      deferredPrompt.userChoice.then(choice => {
+        if (choice.outcome === 'accepted') btn.remove();
         deferredPrompt = null;
       });
     });
