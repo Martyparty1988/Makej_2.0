@@ -14,18 +14,16 @@ let state = {
 };
 
 export function initTimer() {
-  document.querySelectorAll('.person-tab').forEach(btn =>
-    btn.addEventListener('click', () => selectPerson(btn))
+  document.querySelectorAll('.worker-option input').forEach(input =>
+    input.addEventListener('change', () => selectPerson(input))
   );
   document.getElementById('timer-start').addEventListener('click', startTimer);
   document.getElementById('timer-stop').addEventListener('click', stopTimer);
   restoreState();
 }
 
-function selectPerson(btn) {
-  document.querySelectorAll('.person-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  state.person = btn.dataset.person;
+function selectPerson(input) {
+  state.person = input.value;
   updateDisplay();
 }
 
@@ -34,12 +32,19 @@ function updateDisplay() {
     ? Date.now() - state.startTime
     : state.pausedTime;
   const rate = RATES[state.person];
-  const earnings = ((elapsed/3600000)*rate)|0;
+  const earnings = Math.round((elapsed / 3600000) * rate);
+  const seconds = Math.floor((elapsed / 1000) % 60);
+  const minutes = Math.floor((elapsed / (1000 * 60)) % 60);
+  const hours = Math.floor((elapsed / (1000 * 60 * 60)));
+  document.getElementById('hours-tens').textContent = Math.floor(hours / 10);
+  document.getElementById('hours-ones').textContent = hours % 10;
+  document.getElementById('minutes-tens').textContent = Math.floor(minutes / 10);
+  document.getElementById('minutes-ones').textContent = minutes % 10;
+  document.getElementById('seconds-tens').textContent = Math.floor(seconds / 10);
+  document.getElementById('seconds-ones').textContent = seconds % 10;
   document.getElementById('current-earnings').textContent = `${earnings} Kč`;
-  document.getElementById('current-deduction').textContent =
-    `${Math.round(earnings * DEDUCTION_RATES[state.person])} Kč`;
-  document.getElementById('current-net').textContent =
-    `${earnings - Math.round(earnings * DEDUCTION_RATES[state.person])} Kč`;
+  document.getElementById('current-deduction').textContent = `${Math.round(earnings * DEDUCTION_RATES[state.person])} Kč`;
+  document.getElementById('current-net').textContent = `${earnings - Math.round(earnings * DEDUCTION_RATES[state.person])} Kč`;
 }
 
 function startTimer() {
@@ -63,7 +68,7 @@ async function stopTimer() {
   document.getElementById('timer-stop').disabled = true;
   const end = Date.now();
   const duration = end - state.startTime;
-  const earnings = Math.round((duration/3600000) * RATES[state.person]);
+  const earnings = Math.round((duration / 3600000) * RATES[state.person]);
   const log = {
     id: `${Date.now()}`,
     person: state.person,
@@ -81,7 +86,7 @@ async function stopTimer() {
 }
 
 function resetTimer() {
-  state = { running:false, startTime:null, pausedTime:0, interval:null, person:state.person, activity:'', subcategory:'', note:'' };
+  state = { running: false, startTime: null, pausedTime: 0, interval: null, person: state.person, activity: '', subcategory: '', note: '' };
   localStorage.removeItem('timerState');
   updateDisplay();
 }
@@ -96,7 +101,7 @@ function saveState() {
 }
 
 function restoreState() {
-  const saved = JSON.parse(localStorage.getItem('timerState')||'{}');
+  const saved = JSON.parse(localStorage.getItem('timerState') || '{}');
   if (saved.running) {
     state = { ...state, ...saved };
     startTimer();
