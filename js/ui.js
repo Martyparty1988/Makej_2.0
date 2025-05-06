@@ -1,7 +1,6 @@
-// ui.js
 import {
   getSharedBudget, getAllWorkLogs, getAllFinanceRecords,
-  getAllDebts, saveSettings
+  getAllDebts, saveSettings, getSettings
 } from './db.js';
 import { updateCharts } from './charts.js';
 
@@ -38,6 +37,8 @@ function initNavigation() {
       window.location.hash = sec;
     });
   });
+  
+  // Nastavení výchozí sekce
   if (window.location.hash) {
     const sec = window.location.hash.slice(1);
     const section = document.getElementById(sec);
@@ -46,16 +47,9 @@ function initNavigation() {
     } else {
       document.querySelector('nav a[data-section="dochazka"]').click();
     }
+  } else {
+    document.querySelector('nav a[data-section="dochazka"]').click();
   }
-  window.addEventListener('hashchange', () => {
-    const sec = window.location.hash.slice(1);
-    const section = document.getElementById(sec);
-    if (section) {
-      document.querySelector(`nav a[data-section="${sec}"]`)?.click();
-    } else {
-      document.querySelector('nav a[data-section="dochazka"]').click();
-    }
-  });
 }
 
 export async function loadAllData() {
@@ -65,11 +59,9 @@ export async function loadAllData() {
 }
 
 function initCategoryManagement() {
-  // Původní addTaskCategory, deleteTaskCategory, addExpenseCategory…
   document.querySelector('.add-category button').addEventListener('click', () => {
     const input = document.querySelector('.add-category input');
     if (input.value) {
-      // Přidat kategorii do db.js (zjednodušeno)
       showNotification('Kategorie přidána', 'success');
       input.value = '';
     }
