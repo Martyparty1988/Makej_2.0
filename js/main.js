@@ -1,9 +1,10 @@
 // main.js
 import { initDB } from './db.js';
-import { initUI } from './ui.js';
-import { initTimer } from './timer.js';
+import { initUI, setupTaskFilter, setupOfflineIndicator } from './ui.js';
+import { initTimer, setupKeyboardShortcuts } from './timer.js';
 import { initCharts } from './charts.js';
 import { initExportFunctions } from './export.js';
+import { enableSwipeNavigation, addQuickTaskButton, checkStorageUsage } from './enhancements.js';
 
 async function bootstrap() {
   await initDB();
@@ -11,6 +12,15 @@ async function bootstrap() {
   initTimer();
   initCharts();
   initExportFunctions();
+  
+  // New enhancements
+  setupTaskFilter();
+  setupKeyboardShortcuts();
+  setupOfflineIndicator();
+  enableSwipeNavigation();
+  addQuickTaskButton();
+  checkStorageUsage();
+  
   registerSW();
   setupInstallPrompt();
 }
